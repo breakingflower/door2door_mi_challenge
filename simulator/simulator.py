@@ -5,7 +5,9 @@ from shapely.geometry import box
 class Simulator:
     booking_distance_distribution = [0.2, 0.1, 0.3, 0.4]
     max_popular_points = 10
-    path_to_stops = 'berlin_stops.geojson'
+    
+    # it would be good to use an environment variable here
+    path_to_stops = 'simulator/berlin_stops.geojson'
 
     def __init__(self, bounding_box):
         self.bounding_box = bounding_box
