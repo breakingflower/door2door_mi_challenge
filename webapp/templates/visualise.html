@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<h1>Visualisation of the requested query</h1>
+<img class="img-fluid" src={{ image_url }} alt="Visualisation result">
+
+
+<form action="/">
+    <input class="btn btn-outline-info" type="submit" value="Run a new simulation" />
+</form>
+
+
+{% endblock content %}

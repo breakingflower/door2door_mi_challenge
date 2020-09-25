@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+{% import "_macros.jinja" as macros %}
+
+<form method="POST" action="" enctype="multipart/form-data">
+    {{ form.hidden_tag() }}
+    <div class="form-group">
+        <div class="form-group">
+            <h2>Bounding Box</h2>
+
+            {{ macros.render_field(form.x1_field) }}
+            {{ macros.render_field(form.y1_field) }}
+            {{ macros.render_field(form.x2_field) }}
+            {{ macros.render_field(form.y2_field) }}	
+            
+        </div>
+        <div class="form-group">
+            {{ macros.render_field(form.number_of_requests_field)}}
+        </div>
+    </div>
+    <div class="form-group">
+        {{ form.submit(class="btn btn-outline-info") }}
+    </div>
+</form>
+
+{% endblock content %}

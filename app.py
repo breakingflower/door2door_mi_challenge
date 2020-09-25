@@ -15,7 +15,9 @@ from flask_wtf import CSRFProtect
 from webapp.routes import routes
 
 # create a flask application
-application =  Flask(__name__, static_url_path='/static', static_folder='static')
+application =  Flask(__name__, static_url_path='/webapp/static', 
+                        static_folder='webapp/static',
+                        template_folder='webapp/templates')
 
 # CSRF is required for submitting forms (e.g. to run a simulation)
 application.config['SECRET_KEY'] = "MI_CODE_CHALLENGE_FLORIS"
