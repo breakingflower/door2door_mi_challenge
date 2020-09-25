@@ -1,32 +1,31 @@
 ###################################################################
 # Script Name	 : "APP.PY"                                                                                         
-# Description	 : Main file for the mi-code-challenge                                                                                
+# Description	 : Main file for the mi-code-challenge. Launches a
+#                  Flask webserver that shows a single button to 
+#                  trigger a simulation and visualise the resutls.                                                                                
 # Args           :                                                                                           
 # Author       	 : Floris Remmen                                              
 # Email          : floris.remmen@gmail.com 
 # Date           : "22 September 2020"                                     
 ###################################################################
 
-from simulator.simulator import Simulator
-from visualiser.visualiser import Visualiser
+from flask import Flask
+from flask_wtf import CSRFProtect
+
+from webapp.routes import routes
+
+# create a flask application
+application =  Flask(__name__, static_url_path='/static', static_folder='static')
+
+# CSRF is required for submitting forms (e.g. to run a simulation)
+application.config['SECRET_KEY'] = "MI_CODE_CHALLENGE_FLORIS"
+csrf = CSRFProtect()
+csrf.init_app(application)
+
+# route blueprints
+application.register_blueprint(routes)
 
 if __name__ == "__main__":
-    
-    # bounding_box = (min_longitude, min_latitude, max_longitude, max_latitude)
-    bounding_box = (13.34014892578125, 52.52791908000258, 
-                    13.506317138671875, 52.562995039558004)
 
-    # number_of_requests is the number of requests to our Ridepooling service to "simulate".
-    number_of_requests = 6
-
-    # The bounding box should be inside berlin
-    # https://www.openstreetmap.org/relation/62422#map=10/52.4556/13.7755
-    
-
-
-    # get the result using the simulator
-    result = Simulator(bounding_box).simulate(number_of_requests)
-
-    # visualise the results using the visualiser
-    Visualiser().visualise(simulation_results=result)
-    
+    # run the flask application
+    application.run(debug=True)  
