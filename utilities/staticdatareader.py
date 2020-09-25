@@ -1,6 +1,8 @@
 import pandas as pd 
 import geopandas as gpd 
 
+from flask import current_app
+
 class StaticDataReader: 
     """
     Reads the static data files
@@ -8,16 +10,16 @@ class StaticDataReader:
 
     def __init__(self): 
 
-        # This can be improved by not hardcoding
-        self.berlin_bounds_file = 'data/berlin_bounds.poly'
-        self.berlin_stops_file  = 'data/berlin_stops.geojson'
+        # filenames read from current application config
+        self.berlin_bounds_file = current_app.config['BERLIN_BOUNDS_FILE']
+        self.berlin_stops_file  = current_app.config['BERLIN_STOPS_FILE']
     
         # read files 
         self.berlin_stops = self._read_berlin_stops()
         self.berlin_bounds = self._read_berlin_bounds()
     
     def __repr__(self): 
-        return "Reads the static data files"
+        return "Reads static data files"
 
     def _read_berlin_stops(self): 
         """
