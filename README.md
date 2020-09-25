@@ -1,16 +1,19 @@
 # MI Challenge
 
-This repository describes my implementation of the coding challenge after a first interview at Door2door Berlin. The project should be received via email in a zip container, or cloned from github [here](https://github.com/fl0r1s/door2door_mi_challenge). Additionally, the project can be built as a docker image.
+This repository describes my implementation of the coding challenge after a first interview at Door2door Berlin. The project should be received via email in a zip container, or cloned from github [here](https://github.com/fl0r1s/door2door_mi_challenge). Additionally, the project can be built as a docker image. 
 
 ## Structure
 
-The project contains an `visualiser` and a `simulator` directory. The `simulator` directory is a clone of the simulator directory in the [github page](https://github.com/door2door-io/mi-code-challenge), with some changes as highlighted in the *Edits in simulator* paragraph.
+The project contains `visualiser`, `simulator`, `webapp` and `utilities` modules.
+
+The `simulator` module is a clone of the simulator directory in the [github page](https://github.com/door2door-io/mi-code-challenge), with some changes as highlighted in the *Edits in simulator* paragraph. The `visualiser` module is used to generate locally-stored visualisations, and the `webapp` module shows the results in a web interface made in Flask. A utilities module is used to read the static data files.
 
 ## Edits in simulator
 
 - `Simulator.path_to_stops` is set to `simulator/berlin_stops.geojson`. It would be better to not hardcode this, for example by using an environment variable.
-- Added `simulator/__init__.py` to load the simulator as a module in the app directory.
+- Added `simulator/__init__.py` to allow loading of the simulator as a module.
 - `simulator/requirements.txt` updated to match `pandas==1.0.1` due to import errors on version 1.1.2
+- Return type of simulator is not jsonified, e.g. `get_random_points` returns a geodataframe.
 
 ## Mindmap
 
@@ -31,6 +34,8 @@ source env/bin/activate
 pip install -r simulator/requirements.txt
 # install visualiser requirements
 pip install -r visualiser/requirements.txt
+# install webapp requirements
+pip install -r webapp/requirements.txt
 ```
 
 ### Python3
@@ -41,9 +46,11 @@ The app can be run from the project root
 python app.py
 ```
 
+A webserver will start on `localhost:5000`.
+
 ### Jupyter notebook
 
-A jupyter notebook is given `API-showcase-notebook.ipynb`.
+A jupyter notebook is given `API-showcase-notebook.ipynb` that walks through the process of the app.
 
 To open this file the user should install jupyterlab:
 
@@ -66,9 +73,23 @@ docker build -t mi-code-challenge .
 ```
 
 A container showcasing the project can be run with
+
 ```shell
 docker run -rm mi-code-challenge
 ```
 
 ## Test definitions
 
+The objective states that any of the simulations are within the boundaries of Berlin. One can 
+
+## Points of improvement
+
+### Web app
+
+I replaced the React app with a Flask app. Flask is not as good for production environments.
+Additionally, no https connection with this method. It is however easy to implement, as can be observed
+in the `webapp/routes.py` file.
+
+### Static Data
+
+The static data is re-read on every simulation. This is ofcourse not necessary.
