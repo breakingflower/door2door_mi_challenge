@@ -11,6 +11,9 @@ routes = Blueprint('routes', __name__)
 
 @routes.before_request
 def before_request():
+    """
+    Forwards http to https (showcase)
+    """
     scheme = request.headers.get('X-Forwarded-Proto')
     if scheme and scheme == 'http' and request.url.startswith('http://'):
         url = request.url.replace('http://', 'https://', 1)
@@ -19,14 +22,20 @@ def before_request():
 
 @routes.route('/visualise')
 def visualise():
-
-    return render_template('visualise.html', image_url='/static/plot.png')
+    """
+    Renders a page with the image located in /webapp/static/plot.png.
+    The image is made prior to this route, therefore it will be the last generated
+    simulation.
+    """
+    return render_template('visualise.html', image_url='/webapp/static/plot.png')
 
 @routes.route('/', methods=['GET', 'POST'])
 def home():
     """
     Renders the home page. This page contains an instance of a TriggerForm.
-    The TriggerForm contains input fields for the simulation.
+    The TriggerForm contains input fields for the simulation. If the submit
+    button is pressed, a simulation is triggered and the results are visualised
+    using the Simulator and Visualiser class.
     """
     form = TriggerForm() 
 
