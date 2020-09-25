@@ -2,8 +2,9 @@ from flask import Flask
 from flask_wtf import CSRFProtect
 
 from webapp.routes import routes
-from utilities.staticdatareader import StaticDataReader
+from webapp.config import Config
 
+from utilities.staticdatareader import StaticDataReader
 
 def create_app():
     """
@@ -14,12 +15,10 @@ def create_app():
     """
 
     # create a Flask application
-    application =  Flask(__name__, static_url_path='/static', 
-                            static_folder='static',
-                            template_folder='templates')
+    application =  Flask(__name__)
+    application.config.from_object(Config)
 
     # CSRF is required for submitting forms (e.g. to run a simulation)
-    application.config['SECRET_KEY'] = "MI_CODE_CHALLENGE_FLORIS"
     csrf = CSRFProtect()
     csrf.init_app(application)
 
