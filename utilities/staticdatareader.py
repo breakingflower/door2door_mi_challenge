@@ -11,10 +11,13 @@ class StaticDataReader:
         # This can be improved by not hardcoding
         self.berlin_bounds_file = 'data/berlin_bounds.poly'
         self.berlin_stops_file  = 'data/berlin_stops.geojson'
-        
+    
         # read files 
         self.berlin_stops = self._read_berlin_stops()
         self.berlin_bounds = self._read_berlin_bounds()
+    
+    def __repr__(self): 
+        return "Reads the static data files"
 
     def _read_berlin_stops(self): 
         """
