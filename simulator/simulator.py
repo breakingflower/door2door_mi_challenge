@@ -7,7 +7,7 @@ class Simulator:
     max_popular_points = 10
     
     # it would be good to not hard code this
-    path_to_stops = 'simulator/berlin_stops.geojson'
+    path_to_stops = 'data/berlin_stops.geojson'
 
     def __init__(self, bounding_box):
         self.bounding_box = bounding_box
@@ -37,4 +37,4 @@ class Simulator:
         bounding_box_shape = box(*self.bounding_box)
         geodataframe = gpd.read_file(self.path_to_stops)
         within_bounds = geodataframe[geodataframe.within(bounding_box_shape)]
-        return within_bounds.sample(n).to_json()
+        return within_bounds.sample(n) # .to_json()
