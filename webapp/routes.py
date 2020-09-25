@@ -58,7 +58,7 @@ def trigger_page():
         # simulator instance creation
         simulation_results = Simulator(bounding_box).simulate(number_of_requests)
 
-        # generate a static figure
+        # generate the visualisations figure
         viz = Visualiser(bounding_box, simulation_results)
         viz.generate_overview_figure()
         viz.generate_closeup_figure()
