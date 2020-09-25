@@ -2,30 +2,16 @@
 # Script Name	 : "APP.PY"                                                                                         
 # Description	 : Main file for the mi-code-challenge. Launches a
 #                  Flask webserver that shows a single button to 
-#                  trigger a simulation and visualise the resutls.                                                                                
+#                  trigger a simulation and visualise the results.                                                                                
 # Args           :                                                                                           
 # Author       	 : Floris Remmen                                              
 # Email          : floris.remmen@gmail.com 
 # Date           : "22 September 2020"                                     
 ###################################################################
 
-from flask import Flask
-from flask_wtf import CSRFProtect
+from webapp import create_app
 
-from webapp.routes import routes
-
-# create a flask application
-application =  Flask(__name__, static_url_path='/webapp/static', 
-                        static_folder='webapp/static',
-                        template_folder='webapp/templates')
-
-# CSRF is required for submitting forms (e.g. to run a simulation)
-application.config['SECRET_KEY'] = "MI_CODE_CHALLENGE_FLORIS"
-csrf = CSRFProtect()
-csrf.init_app(application)
-
-# route blueprints
-application.register_blueprint(routes)
+application = create_app() 
 
 if __name__ == "__main__":
 
