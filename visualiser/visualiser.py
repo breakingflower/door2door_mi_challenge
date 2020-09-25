@@ -28,9 +28,15 @@ from random import randint
 # google maps plotting
 import gmplot
 
+# to access the API key
+from flask import current_app
+
 
 
 class Visualiser: 
+
+    ## TODO: Use booking bins
+
 
     def __init__(self, bounding_box: tuple, simulation_results: dict):
         
@@ -163,22 +169,32 @@ class Visualiser:
         No API key was defined, so only for development purposes.
         """
         # Create the map plotter:
-        apikey = '' # no API key for this project.
-        gmap = gmplot.GoogleMapPlotter(*self._get_box_center(), 13, apikey=apikey)
+        apikey = ''
+        # apikey = '' # no API key for this project.
+        gmap = gmplot.GoogleMapPlotter(*self._get_box_center(), 13, apikey=apikey, map_type='hybrid')
 
+        
         # scatter pickup points
         gmap.scatter(self.simulation_results['most_popular_pickup_points'].geometry.y, 
                         self.simulation_results['most_popular_pickup_points'].geometry.x, 
                         color='blue', marker=True)
+        # add the identifier to the marker
+        for _, row in self.simulation_results['most_popular_pickup_points'].iterrows(): 
+            gmap.text(row.geometry.y, row.geometry.x, row.id)
+    
         # scatter dropoff points
         gmap.scatter(self.simulation_results['most_popular_dropoff_points'].geometry.y, 
                         self.simulation_results['most_popular_dropoff_points'].geometry.x, 
-                        color='red', size=80, marker=False, symbol='x')
+                        color='red', marker=True)
+        # add the identifier to the marker
+        for _, row in self.simulation_results['most_popular_dropoff_points'].iterrows(): 
+            gmap.text(row.geometry.y, row.geometry.x, row.id)
+            
         # plot bounding box. The function requires four coordinates for a box.
         gmap.polygon(
             [self.bounding_box[1], self.bounding_box[3], self.bounding_box[3], self.bounding_box[1]], 
             [self.bounding_box[0], self.bounding_box[0], self.bounding_box[2], self.bounding_box[2]],  
-            color='orange', edge_width=10
+            color='orange', edge_width=5
         )
     
         # Draw the map to an HTML file:
