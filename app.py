@@ -11,9 +11,10 @@
 
 from webapp import create_app
 
+# Create a Flask application
 application = create_app() 
 
 if __name__ == "__main__":
 
-    # run the flask application
+    # Run the flask application
     application.run(debug=True)  
