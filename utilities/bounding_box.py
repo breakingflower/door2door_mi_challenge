@@ -11,6 +11,10 @@ class BoundingBox:
         self.bounding_box = bounding_box
        
     def to_crs(self, epsg=3857): 
+        """
+        Projects the bounding box coordinates to a new coordinate system. 
+        Needed for plotting onto a web mercator map, e.g. contextily.
+        """
 
         in_proj = Proj(init='epsg:4326')
         out_proj = Proj(init=f'epsg:{epsg}')
@@ -31,13 +35,13 @@ class BoundingBox:
     @property
     def lats(self): 
         """
-        Returns list of latitude coordinates
+        Returns list of four latitude coordinates
         """
         return [self.bounding_box[1], self.bounding_box[3], self.bounding_box[3], self.bounding_box[1]]
     
     @property
     def lons(self):
         """
-        Returns list of longitude coordinates
+        Returns list of four longitude coordinates
         """
         return [self.bounding_box[0], self.bounding_box[0], self.bounding_box[2], self.bounding_box[2]]
