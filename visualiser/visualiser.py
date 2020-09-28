@@ -36,9 +36,6 @@ import gmplot
 # to edit the contextily cache directory
 import os
 
-# for static directory extraction from the current_app
-from flask import current_app
-
 class Visualiser: 
     """
     Class to generate visualisations based on the output of a Simulator instance.
