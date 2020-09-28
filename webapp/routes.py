@@ -1,12 +1,16 @@
 
 from flask import (Flask, render_template, request, 
-                    redirect, url_for, Blueprint)
+                    redirect, url_for, Blueprint, current_app)
 
 from webapp.forms import TriggerForm
 
 from simulator.simulator import Simulator
 from visualiser.visualiser import Visualiser
+from utilities.cleanup import Cleaner
+from utilities.staticdatareader import StaticDataReader
+from utilities.bounding_box import BoundingBox
 
+import os
 import random 
 
 routes = Blueprint('routes', __name__)
@@ -22,8 +26,8 @@ def before_request():
         code = 301
         return redirect(url, code=code)
 
-@routes.route('/visualise/<int:viz_id>')
-def visualise(viz_id):
+@routes.route('/visualise/<int:visualiser_id>')
+def visualise(visualiser_id):
     """
     Renders a page with generated images.
     The image is made prior to this route, and an ID is prepended to the filename.
@@ -32,9 +36,9 @@ def visualise(viz_id):
     """
 
     return render_template('visualise.html',
-            overview_image_url= url_for('static', filename=f'{viz_id}_overview_plot.png'), 
-            closeup_image_url=url_for('static', filename=f'{viz_id}_closeup_plot.png'),
-            gmap_url=url_for('static', filename=f'{viz_id}_map.html'))
+            overview_image_url= url_for('static', filename=f'{visualiser_id}_overview_plot.png'), 
+            closeup_image_url=url_for('static', filename=f'{visualiser_id}_closeup_plot.png'),
+            gmap_url=url_for('static', filename=f'{visualiser_id}_map.html'))
 
 @routes.route('/', methods=['GET', 'POST'])
 def trigger_page():
@@ -47,24 +51,54 @@ def trigger_page():
     form = TriggerForm() 
 
     if form.validate_on_submit(): 
+        
+        # get the static path from the current application
+        static_path = os.path.join(current_app.root_path, current_app.static_folder)
+
+        # clean up the previous simulation results
+        Cleaner().remove_previous_simulation_results(static_path=static_path)
 
         # number of requests
         number_of_requests = form.number_of_requests_field.data
 
-        # the bounding box is a string, convert it to a tuple
-        bounding_box = (form.x1_field.data, form.y1_field.data, 
-                        form.x2_field.data, form.y2_field.data)
+        # Create an instance of the bounding box class.
+        bounding_box = BoundingBox(
+            (
+            form.x1_field.data, 
+            form.y1_field.data, 
+            form.x2_field.data, 
+            form.y2_field.data
+            )
+        )
 
-        # simulator instance creation
-        simulation_results = Simulator(bounding_box).simulate(number_of_requests)
+        # Create an instance of the StaticDataReader class.
+        static_data = StaticDataReader(
+            berlin_bounds_file=current_app.config['BERLIN_BOUNDS_FILE'], 
+            berlin_stops_file=current_app.config['BERLIN_STOPS_FILE']
+        ) 
 
-        # generate the visualisations figure
-        viz = Visualiser(bounding_box, simulation_results)
-        viz.generate_overview_figure()
-        viz.generate_closeup_figure()
-        viz.generate_gmap()
+        # Create an instance of the Simulator class.
+        simulator = Simulator(
+            bounding_box = bounding_box.bounding_box, 
+            path_to_stops=current_app.config['BERLIN_STOPS_FILE']
+        )
+        # Run a simulation
+        simulation_results = simulator.simulate(number_of_requests)
+
+        # Create an instance of the Visualiser class.
+        visualiser = Visualiser(
+            bounding_box = bounding_box, 
+            simulation_results = simulation_results, 
+            static_path = static_path,
+            static_data = static_data
+        )
+
+        # Generate visualisations
+        visualiser.generate_overview_figure()
+        visualiser.generate_closeup_figure()
+        visualiser.generate_gmap()
         
         # redirect to the visualise endpoint
-        return redirect(url_for('routes.visualise', viz_id = viz.id))
+        return redirect(url_for('routes.visualise', visualiser_id = visualiser.id))
 
     return render_template('home.html', title="MI Code Challenge", form=form)
