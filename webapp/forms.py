@@ -2,7 +2,6 @@ from wtforms import SubmitField, IntegerField, FloatField
 from flask_wtf import FlaskForm, CSRFProtect
 from wtforms.validators import DataRequired
 
-
 class TriggerForm(FlaskForm): 
     """
     A form definition to trigger a simulation.
