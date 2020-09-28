@@ -3,7 +3,6 @@ from flask import (Flask, render_template, request,
                     redirect, url_for, Blueprint, current_app)
 
 from webapp.forms import TriggerForm
-
 from simulator.simulator import Simulator
 from visualiser.visualiser import Visualiser
 from utilities.cleanup import Cleaner
@@ -32,7 +31,7 @@ def visualise(visualiser_id):
     Renders a page with generated images.
     The image is made prior to this route, and an ID is prepended to the filename.
     The id is passed as a parameter.
-    :type viz_id: int
+    :type visualiser_id: int
     """
 
     return render_template('visualise.html',
@@ -52,7 +51,7 @@ def trigger_page():
 
     if form.validate_on_submit(): 
         
-        # get the static path from the current application
+        # get the static path from the current application to store the visualisations
         static_path = os.path.join(current_app.root_path, current_app.static_folder)
 
         # clean up the previous simulation results
