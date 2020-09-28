@@ -14,6 +14,7 @@ class Cleaner:
         Removes all files with the .png and .html extension from the static folder
         """
 
+        # get the full path from the current_app
         static_path = os.path.join(current_app.root_path, current_app.static_folder)
         
         previous_simulation_images = glob.glob(f'{static_path}/*.png')
