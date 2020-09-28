@@ -10,10 +10,11 @@ class BoundingBox:
         # bounding box is x1, y1, x2, y2
         self.bounding_box = bounding_box
        
-    def to_crs(self, epsg=3857) -> float, float, float, float: 
+    def to_crs(self, epsg=3857) -> tuple: 
         """
         Projects the bounding box coordinates to a new coordinate system. 
         Needed for plotting onto a web mercator map, e.g. contextily.
+        :rtype tuple
         """
 
         in_proj = Proj(init='epsg:4326')
@@ -22,7 +23,7 @@ class BoundingBox:
         x1_proj, y1_proj = transform(in_proj, out_proj, self.bounding_box[0], self.bounding_box[1])
         x2_proj, y2_proj = transform(in_proj, out_proj, self.bounding_box[2], self.bounding_box[3])
 
-        return x1_proj, y1_proj, x2_proj, y2_proj
+        return (x1_proj, y1_proj, x2_proj, y2_proj)
 
     @property
     def center(self) -> tuple: 
