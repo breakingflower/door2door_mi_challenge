@@ -1,8 +1,8 @@
 # MI Challenge
 
-This repository describes my implementation of the coding challenge after a first interview at Door2door Berlin. The project should be cloned from github [here](https://github.com/fl0r1s/door2door_mi_challenge). 
+This repository describes my implementation of the coding challenge after a first interview at Door2door Berlin. The project should be cloned from github [here](https://github.com/fl0r1s/door2door_mi_challenge).
 
-# Structure
+## Structure
 
 The project contains `utilities`, `visualiser`, `simulator`, `webapp` and `test` modules.
 
@@ -10,7 +10,7 @@ The `simulator` module is a clone of the simulator directory in the [github page
 
 The `data` directory contains two static data files. Addionally, this folder contains a `contextily_cache` directory to reduce the amount of requests to a tiling server.
 
-# Edits in simulator
+## Edits in simulator
 
 - `Simulator.path_to_stops` is moved to be an instance variable.
 - Added `simulator/__init__.py` to allow loading of the simulator as a module.
@@ -18,7 +18,7 @@ The `data` directory contains two static data files. Addionally, this folder con
 - Return type of simulator is not jsonified, e.g. `get_random_points` returns a geodataframe.
 - Sets a default coordinate system in the generated geodataframe: EPSG:4326 (WGS84). This is necessary for getting map tiles from contextily, which operates in the current version in EPSG:3857 - Web mercator.
 
-# Python environment
+## Python environment
 
 Setting up the python environment is done as follows:
 
@@ -33,7 +33,7 @@ source env/bin/activate
 pip install -r requirements.txt
 ```
 
-# Running the application using the webapp module
+## Running the application using the webapp module
 
 The webapp module contains the web interface.
 All of the webpages are generated using the python `flask` module.
@@ -50,7 +50,7 @@ Some other files are present:
 - a `forms.py` file containing the web form that is shown as a homepage when running the app. This form data can be altered by the user. A test is made to assert that the fields are of correct data type and filled.
 - a `routes.py` file containing the required routing points for the webapp. In essence only two routes are necessary: a `trigger_page` route to initialize the simulation and generate the resulting images, and a `visualise` route to visualise  the newly made results.
 
-## Webapp in virtualenv
+### Webapp in virtualenv
 
 The webapp can be run from the project root using the previously defined environment.
 
@@ -61,7 +61,7 @@ python app.py
 
 A webserver will start on `localhost:5000`.
 
-## Webapp in Docker
+### Webapp in Docker
 
 A docker image can be pulled and run directly from docker hub:
 
@@ -85,7 +85,7 @@ Port 5000 is forwarded from container to host. A webserver will start on `localh
 
 The docker image is based on `python:3.8` and is 1.33GB in size. This is too large and a focus can be put on reducing the size. However, this is not the focus of the project and therefore it was ignored.
 
-# Running the application using the API
+## Running the application using the API
 
 The modules can all be used as python3 modules. An import is done using e.g.
 
@@ -93,7 +93,7 @@ The modules can all be used as python3 modules. An import is done using e.g.
 from visualiser.visualiser import Visualiser
 ```
 
-## API in python3 using Jupyter notebook
+### API in python3 using Jupyter notebook
 
 A jupyter notebook is given `API-showcase-notebook.ipynb` that walks through the each of the modules in the application seperately. This file also contains documentation on each of the functions / classes.
 
@@ -109,18 +109,18 @@ Afterwards, the file can be shown using
 jupyter notebook API-showcase-notebook.ipynb
 ```
 
-# After this I assume you have succesfully run the application and did some preliminary result generation.
+## After this I assume you have succesfully run the application and did some preliminary result generation
 
-# Test definitions
+## Test definitions
 
-## Sanity checks
+### Sanity checks
 
 The objective states that any of the simulations are within the boundaries of Berlin.
 A sanity check is made in the visualiser to visually confirm that the bbox is within bounds.
 Addionally, this sanity check should be provoked in the Simulator class to mathematically verify the solutions integrity.
 However modifying the Simulator class was out of scope.
 
-## Webapp
+### Webapp
 
 A form is generated in the web interface at route `home` forces the user to input
 
@@ -129,7 +129,7 @@ A form is generated in the web interface at route `home` forces the user to inpu
 
 If this is not true, the form will yield an error in the corresponding line and the request will not be forwarded until the user uses the correct datatype.
 
-## API
+### API
 
 If a user is not using the webserver but instead the API, some checks are performed:
 
@@ -138,32 +138,32 @@ If a user is not using the webserver but instead the API, some checks are perfor
 
 Several tests have been defined in the `tests` module. More specifically for the `BoundingBox, Simulator, StaticDataReader and Visualiser` classes. Some of the test modules suppress Future and Deprication Warnings. The tests can be run as follows:
 
-### Running a single test
+#### Running a single test
 
 ```shell
 python -m unittest tests/xxxx.py
 ```
 
-### Running all of the tests
+#### Running all of the tests
 
 ```shell
 python -m unittest discover tests
 ```
 
-# Points of improvement
+## Points of improvement
 
-## Web app
+### Web app
 
 - I replaced the React app with a Flask app. Flask is not good for production environments.
 - As can be observed in `webapp/routes.py`, HTTPS is forced before each request. The flask app can be extended using such functionalities.
 - Fetching the `contextily` web tiles can be very slow. An initial effort is made to reduce the number of required requests to the web tile server by hardcoding a cache path in the `data/contextily_cache` directory. Other options are available.
 
-## Static Data
+### Static Data
 
 - The static data is re-read on every simulation. Both simulator and visualiser class re-read the data.
 This is ofcourse not necessary.
 
-## Visualisations
+### Visualisations
 
 - The visualisations are generated to a directory, and this directory is cleaned up before a new request is completed when the webapp is used.
 This is ok, but it would be better to generate it on-the-fly. An option is to show a default Berlin visualisation and data can be highlighted by for example selection using mouse input.
@@ -171,13 +171,13 @@ This is ok, but it would be better to generate it on-the-fly. An option is to sh
 - No path is shown between sets of points. This is related to dropoff-pickup relationships.
 - The Google Maps web page displays an error "This page can't load Google Maps correctly." due to no API key being present for this project.
 
-## Other
+### Other
 
 - The Simulator requires a GeoPandas version of 0.5.0. In this version a FutureWarning is given for the initialisation of a GeoDataFrame with coordinate systems. This is according to [this stackexchange post](https://gis.stackexchange.com/questions/348997/constant-future-warnings-with-new-pyproj) fixed in version > 0.7.0. However, touching the requirements for the simulator is out of scope. Fixing the warnings will be done after the migration to > 0.7.0 is done.
 - The Visualiser class is quite slow due to queries to the web tile servers. This can be improved using cached tiles.
 - All of the classes are built to be easily extensible / maintainable.
 
-## Timing
+### Timing
 
 All of the cells in the `API-showcase-notebook` are timed using the `%%timeit` and `%%prun` commands and the following conclusions can be drawn:
 
