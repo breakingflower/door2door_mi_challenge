@@ -1,3 +1,12 @@
+###################################################################
+# Script Name	 : "CLEANUP.PY"                                                                                         
+# Description	 : Class definition for Cleaner                                                                                
+# Args           :                                                                                           
+# Author       	 : Floris Remmen                                              
+# Email          : floris.remmen@gmail.com 
+# Date           : "28 September 2020"                                     
+###################################################################
+
 import os
 import glob
 

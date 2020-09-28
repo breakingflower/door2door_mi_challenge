@@ -1,3 +1,12 @@
+###################################################################
+# Script Name	 : "ROUTES.PY"                                                                                         
+# Description	 : Endpoint routing scheme for the python flask
+#                   application.                                                                                
+# Args           :                                                                                           
+# Author       	 : Floris Remmen                                              
+# Email          : floris.remmen@gmail.com 
+# Date           : "28 September 2020"                                     
+###################################################################
 
 from flask import (Flask, render_template, request, 
                     redirect, url_for, Blueprint, current_app)

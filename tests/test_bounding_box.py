@@ -1,3 +1,12 @@
+###################################################################
+# Script Name	 : "TEST_BOUNDING_BOX.PY"                                                                                         
+# Description	 : Tests for the utilities/bounding_box.py file.                                                                                
+# Args           :                                                                                           
+# Author       	 : Floris Remmen                                              
+# Email          : floris.remmen@gmail.com 
+# Date           : "28 September 2020"                                     
+###################################################################
+
 import unittest
 from utilities.bounding_box import BoundingBox
 import math

@@ -1,3 +1,12 @@
+###################################################################
+# Script Name	 : "STATICDATAREADER.PY"                                                                                         
+# Description	 : Class definition for the static data file reader                                                                                
+# Args           :                                                                                           
+# Author       	 : Floris Remmen                                              
+# Email          : floris.remmen@gmail.com 
+# Date           : "28 September 2020"                                     
+###################################################################
+
 import pandas as pd 
 import geopandas as gpd 
 

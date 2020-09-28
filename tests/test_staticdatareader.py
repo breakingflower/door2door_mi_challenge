@@ -1,3 +1,12 @@
+###################################################################
+# Script Name	 : "TEST_STATICDATAREADER.PY"                                                                                         
+# Description	 : Tests for the utilities/staticdatareader.py file                                                                                
+# Args           :                                                                                           
+# Author       	 : Floris Remmen                                              
+# Email          : floris.remmen@gmail.com 
+# Date           : "28 September 2020"                                     
+###################################################################
+
 import unittest
 from utilities.staticdatareader import StaticDataReader
 

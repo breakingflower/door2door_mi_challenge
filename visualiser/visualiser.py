@@ -1,6 +1,6 @@
 ###################################################################
 # Script Name	 : "VISUALISER.PY"                                                                                         
-# Description	 : Visualiser class for mi-code-challenge                                                                                
+# Description	 : Class definition for the visualiser.
 # Args           :                                                                                           
 # Author       	 : Floris Remmen                                              
 # Email          : floris.remmen@gmail.com 

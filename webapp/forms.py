@@ -1,3 +1,12 @@
+###################################################################
+# Script Name	 : "FORMS.PY"                                                                                         
+# Description	 : Form classes for python flask generated pages.                                                                                
+# Args           :                                                                                           
+# Author       	 : Floris Remmen                                              
+# Email          : floris.remmen@gmail.com 
+# Date           : "28 September 2020"                                     
+###################################################################
+
 from wtforms import SubmitField, IntegerField, FloatField
 from flask_wtf import FlaskForm, CSRFProtect
 from wtforms.validators import DataRequired

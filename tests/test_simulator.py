@@ -1,3 +1,12 @@
+###################################################################
+# Script Name	 : "TEST_SIMULATOR.PY"                                                                                         
+# Description	 : Tests for the simulator/simulator.py file                                                                                
+# Args           :                                                                                           
+# Author       	 : Floris Remmen                                              
+# Email          : floris.remmen@gmail.com 
+# Date           : "28 September 2020"                                     
+###################################################################
+
 import unittest
 from simulator.simulator import Simulator
 

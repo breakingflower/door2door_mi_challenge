@@ -1,3 +1,12 @@
+###################################################################
+# Script Name	 : "CONFIG.PY"                                                                                         
+# Description	 : Class definition for the Config of the flask app                                                                                
+# Args           :                                                                                           
+# Author       	 : Floris Remmen                                              
+# Email          : floris.remmen@gmail.com 
+# Date           : "28 September 2020"                                     
+###################################################################
+
 class Config:
     """
     Configuration Class for the MI-Code-Challenge Flask app.

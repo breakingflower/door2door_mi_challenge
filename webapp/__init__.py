@@ -1,3 +1,13 @@
+###################################################################
+# Script Name	 : "__INIT__.PY"                                                                                         
+# Description	 : Initialises python flask app using the application
+#                       factory standard.                                                                                
+# Args           :                                                                                           
+# Author       	 : Floris Remmen                                              
+# Email          : floris.remmen@gmail.com 
+# Date           : "28 September 2020"                                     
+###################################################################
+
 from flask import Flask
 from flask_wtf import CSRFProtect
 

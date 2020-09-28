@@ -1,3 +1,12 @@
+###################################################################
+# Script Name	 : "TEST_VISUALISER.PY"                                                                                         
+# Description	 : Tests for the visualiser/visualiser.py file                                                                                 
+# Args           :                                                                                           
+# Author       	 : Floris Remmen                                              
+# Email          : floris.remmen@gmail.com 
+# Date           : "28 September 2020"                                     
+###################################################################
+
 import unittest
 from visualiser.visualiser import Visualiser
 

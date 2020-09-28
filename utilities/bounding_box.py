@@ -1,3 +1,12 @@
+###################################################################
+# Script Name	 : "BOUNDING_BOX.PY"                                                                                         
+# Description	 : Class definition for a bounding box.                                                                                
+# Args           :                                                                                           
+# Author       	 : Floris Remmen                                              
+# Email          : floris.remmen@gmail.com 
+# Date           : "28 September 2020"                                     
+###################################################################
+
 from pyproj import Proj, transform
 
 class BoundingBox: 
