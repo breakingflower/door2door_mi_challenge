@@ -83,7 +83,8 @@ class Visualiser:
         # plotting all of the stops in Berlin in correct CRS
         self.static_data.berlin_stops.to_crs(epsg=self.crs_epsg).plot(ax=ax, marker='.', markersize=15, label='Stops') 
         # plotting the city boundaries
-        # self.static_data.berlin_bounds.to_crs(epsg=self.crs_epsg).plot(ax=ax, marker='.', markersize=15, label='Bounds', color='red')
+        self.static_data.berlin_bounds.to_crs(epsg=self.crs_epsg).plot(ax=ax, marker='.', markersize=15, label='Bounds', color='red')
+        # plot(ax=ax, marker='.', markersize=15, label='Bounds', color='red')
         # plot the bounding box as a matplotlib Rectangle
         x1, y1, x2, y2 = self.bounding_box.to_crs(epsg=self.crs_epsg)
         bounding_box_handle = matplotlib.patches.Rectangle(
