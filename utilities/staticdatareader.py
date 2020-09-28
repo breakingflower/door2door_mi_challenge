@@ -1,22 +1,20 @@
 import pandas as pd 
 import geopandas as gpd 
 
-from flask import current_app
-
 class StaticDataReader: 
     """
     Reads the static data files
     """
 
-    def __init__(self): 
+    def __init__(self, berlin_bounds_file, berlin_stops_file): 
 
-        # filenames read from current application config
-        self.berlin_bounds_file = current_app.config['BERLIN_BOUNDS_FILE']
-        self.berlin_stops_file  = current_app.config['BERLIN_STOPS_FILE']
-    
+        # set filenames
+        self.berlin_bounds_file = berlin_bounds_file
+        self.berlin_stops_file  = berlin_stops_file
+
         # read files 
-        self.berlin_stops = self._read_berlin_stops()
-        self.berlin_bounds = self._read_berlin_bounds()
+        self.berlin_stops   = self._read_berlin_stops()
+        self.berlin_bounds  = self._read_berlin_bounds()
     
     def __repr__(self): 
         return f"Reads static data files {self.berlin_bounds_file} and {self.berlin_stops_file}"
@@ -41,6 +39,9 @@ class StaticDataReader:
             df,
             geometry = gpd.points_from_xy(df.lat, df.lon)
         )
+
+        # drop the lat, lon columns as they are in the geometry column
+        gdf.drop(['lat', 'lon'], axis=1, inplace=True)
         # set the coordinate system. This has to be done this way due to geopandas==0.5.0
         gdf.crs = {'init': 'epsg:4326'}
 
