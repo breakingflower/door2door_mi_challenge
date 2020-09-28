@@ -5,12 +5,9 @@ class Simulator:
     booking_distance_distribution = [0.2, 0.1, 0.3, 0.4]
     max_popular_points = 10
     
-    # it would be good to not hard code this
-    # path_to_stops = current_app.config['BERLIN_STOPS_FILE']
-    path_to_stops = 'data/berlin_stops.geojson'
-
-    def __init__(self, bounding_box):
+    def __init__(self, bounding_box, path_to_stops='data/berlin_stops.geojson', static_data=[]):
         self.bounding_box = bounding_box
+        self.path_to_stops = path_to_stops
 
     def simulate(self, number_of_requests):
         booking_distance_bins = self.get_booking_distance_bins(
