@@ -10,7 +10,7 @@ class BoundingBox:
         # bounding box is x1, y1, x2, y2
         self.bounding_box = bounding_box
        
-    def to_crs(self, epsg=3857): 
+    def to_crs(self, epsg=3857) -> float, float, float, float: 
         """
         Projects the bounding box coordinates to a new coordinate system. 
         Needed for plotting onto a web mercator map, e.g. contextily.
@@ -25,7 +25,7 @@ class BoundingBox:
         return x1_proj, y1_proj, x2_proj, y2_proj
 
     @property
-    def center(self): 
+    def center(self) -> tuple: 
         """
         Returns a tuple with the center of the bounding box, calculated by averaging lat/lon coordinates.
         eg (y0 + y1) / 2 , (x0 + x1) / 2
@@ -33,14 +33,14 @@ class BoundingBox:
         return (self.bounding_box[1] + self.bounding_box[3]) / 2, (self.bounding_box[0] + self.bounding_box[2]) / 2
         
     @property
-    def lats(self): 
+    def lats(self) -> list: 
         """
         Returns list of four latitude coordinates
         """
         return [self.bounding_box[1], self.bounding_box[3], self.bounding_box[3], self.bounding_box[1]]
     
     @property
-    def lons(self):
+    def lons(self) -> list:
         """
         Returns list of four longitude coordinates
         """
