@@ -1,5 +1,6 @@
 import pandas as pd 
 import geopandas as gpd 
+from pyproj import CRS
 
 from flask import current_app
 
@@ -19,14 +20,14 @@ class StaticDataReader:
         self.berlin_bounds = self._read_berlin_bounds()
     
     def __repr__(self): 
-        return "Reads static data files"
+        return f"Reads static data files {self.berlin_bounds_file} and {self.berlin_stops_file}"
 
     def _read_berlin_stops(self): 
         """
-        Reads berlin stops from a geojson file
+        Reads berlin stops from a geojson file, with epsg 4326
         :rtype geopandas.GeoDataFrame
         """
-        return gpd.read_file(self.berlin_stops_file)
+        return gpd.read_file(self.berlin_stops_file, crs='epsg:4326')
 
     def _read_berlin_bounds(self): 
         """
@@ -36,4 +37,10 @@ class StaticDataReader:
         df = pd.read_csv(self.berlin_bounds_file, delim_whitespace=True, header=None)
         df.columns = ['lat', 'lon']
 
-        return gpd.GeoDataFrame(geometry = gpd.points_from_xy(df.lat, df.lon))
+        # create a geodataframe
+        gdf = gpd.GeoDataFrame(
+            df, crs  ='epsg:4326',
+            geometry = gpd.points_from_xy(df.lat, df.lon)
+        )
+
+        return gdf
