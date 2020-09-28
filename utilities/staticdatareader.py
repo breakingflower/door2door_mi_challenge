@@ -1,6 +1,5 @@
 import pandas as pd 
 import geopandas as gpd 
-from pyproj import CRS
 
 from flask import current_app
 
