@@ -8,7 +8,7 @@ class BoundingBox:
     def __init__(self, bounding_box: tuple): 
         
         # bounding box is x1, y1, x2, y2
-        self.bounding_box = bounding_box
+        self.bounding_box = [float(val) if type(val) is not str else float("NaN") for val in bounding_box]
        
     def to_crs(self, epsg=3857) -> tuple: 
         """
