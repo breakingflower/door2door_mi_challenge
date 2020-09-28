@@ -23,6 +23,7 @@ import matplotlib
 matplotlib.use('Agg') # non interactive backend for matplotlib
 import matplotlib.pyplot as plt
 import contextily as ctx
+from shapely.geometry import Polygon # to plot berlin bounds as polygon
 
 # for visualiser ID generation
 from random import randint
@@ -39,7 +40,6 @@ class Visualiser:
     """
 
     ## TODO: Use booking bins
-    ## TODO: Set bounds data as polygon
 
     def __init__(self, bounding_box: tuple, simulation_results: dict):
         
@@ -80,11 +80,16 @@ class Visualiser:
         _, ax = plt.subplots(figsize=(10,8)) 
         plt.title('Overview plot')
 
-        # plotting all of the stops in Berlin in correct CRS
+        # plotting all of the stops in Berlin in correct crs
         self.static_data.berlin_stops.to_crs(epsg=self.crs_epsg).plot(ax=ax, marker='.', markersize=15, label='Stops') 
-        # plotting the city boundaries
-        self.static_data.berlin_bounds.to_crs(epsg=self.crs_epsg).plot(ax=ax, marker='.', markersize=15, label='Bounds', color='red')
-        # plot(ax=ax, marker='.', markersize=15, label='Bounds', color='red')
+
+        # convert the bounds of berlin to the correct crs
+        berlin_bounds_points = self.static_data.berlin_bounds.to_crs(epsg=self.crs_epsg)
+        # convert the points to a polygon
+        berlin_bounds_poly = Polygon([[p.x, p.y] for p in berlin_bounds_points.geometry])
+        # plot the polygon's exterior --> this is the bounds of berlin.
+        ax.plot(*berlin_bounds_poly.exterior.xy, color='red')
+
         # plot the bounding box as a matplotlib Rectangle
         x1, y1, x2, y2 = self.bounding_box.to_crs(epsg=self.crs_epsg)
         bounding_box_handle = matplotlib.patches.Rectangle(
@@ -98,7 +103,7 @@ class Visualiser:
         )
         ax.add_patch(bounding_box_handle)
 
-        # Set the coordinate system to EPSG 3857. This is the most popular one for web tiles
+        # Set the coordinate system of the simulation to EPSG 3857. This is the most popular one for web tiles
         pickup_data = self.simulation_results['most_popular_pickup_points'].to_crs(epsg=self.crs_epsg)
         dropoff_data = self.simulation_results['most_popular_dropoff_points'].to_crs(epsg=self.crs_epsg)
         # plot pickup points
@@ -135,19 +140,6 @@ class Visualiser:
         The image is saved in the webapp/static directory with the identifier of the Visualiser instance.
         """
 
-        # Sim results look like this 
-        # {
-        #     'booking_distance_bins': booking_distance_bins, 
-        #           -->  get_booking_distance_bins
-        #           --> {'From 0->1km': 1, 'From 1->2km': 1, 'From 2->3km': 2, 'From 3->4km': 2}
-        #     'most_popular_dropoff_points': most_popular_dropoff_points,
-        #           --> get_random_points
-        #           --> geodataframe with (index, name, id, geom) 
-        #     'most_popular_pickup_points': most_popular_pickup_points --> get_random_points
-        #           --> get_random_points
-        #           --> geodataframe with (index, name, id, geom) and size number_of_requests
-        # }
-
         _, ax = plt.subplots() 
 
         plt.title('Close up')
@@ -169,7 +161,7 @@ class Visualiser:
         # set labels on axes
         ax.set(xlabel="Latitude", ylabel="Longitude")
         # add a basemap using contextily & remove axes
-        ctx.add_basemap(ax=ax, zoom=12)
+        ctx.add_basemap(ax=ax)
         ax.set_axis_off() 
         # legend to the right of the figure
         plt.legend(bbox_to_anchor=(1.05, 1))
