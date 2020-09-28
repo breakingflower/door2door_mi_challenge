@@ -1,5 +1,6 @@
 import unittest
 from utilities.bounding_box import BoundingBox
+import math
 
 import warnings
 
@@ -17,7 +18,7 @@ class TestBoundingBox(unittest.TestCase):
         warnings.simplefilter('ignore', category=FutureWarning)
         warnings.simplefilter('ignore', category=DeprecationWarning)
 
-        self.false_bbox = BoundingBox(("a", "b", 23.4, 34.2))
+        self.bad_bbox = BoundingBox(("a", "b", 23.4, 34.2))
         self.good_bbox = BoundingBox(
             (
                 13.34014892578125, 
@@ -28,16 +29,28 @@ class TestBoundingBox(unittest.TestCase):
         )
 
     def test_to_crs(self): 
-        self.assertRaises((ValueError, TypeError), self.false_bbox.to_crs()) 
+        """
+        Tests the to_crs function. Should return ValueError and TypeError for bad_bbox.
+        Good values should be equal
+        """
+        self.assertRaises((ValueError, TypeError), self.bad_bbox.to_crs()) 
         self.assertEqual(self.good_bbox.to_crs(), ((1485018.5855244042, 6896148.6918886015, 1503516.3463694167, 6902569.402264554)))
     
     def test_lats(self):
-        self.assertRaises(TypeError, self.false_bbox.lats)
-        self.assertEqual(self.good_bbox.lats, [52.52791908000258, 52.562995039558004, 52.562995039558004, 52.52791908000258])
+        """
+        Tests the lats property. Should return TypeError for bad_bbox.
+        Good values should be equal. 
+        """
+        self.assertRaises(TypeError, self.bad_bbox.lats) 
+        self.assertListEqual(self.good_bbox.lats, [52.52791908000258, 52.562995039558004, 52.562995039558004, 52.52791908000258])
     
     def test_lons(self): 
-        self.assertRaises(TypeError, self.false_bbox.lons)
-        self.assertEqual(self.good_bbox.lons, [13.34014892578125, 13.34014892578125, 13.506317138671875, 13.506317138671875])
+        """
+        Tests the lons property. Should return TypeError for bad_bbox.
+        Good values should be equal. 
+        """
+        self.assertRaises(TypeError, self.bad_bbox.lons) 
+        self.assertListEqual(self.good_bbox.lons, [13.34014892578125, 13.34014892578125, 13.506317138671875, 13.506317138671875])
     
     def tearDown(self): 
         del self
