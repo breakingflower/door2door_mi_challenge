@@ -3,7 +3,7 @@ import glob
 
 class Cleaner:
     """
-    Class to clean up the results of the simulation / visualisation
+    Class to clean up the application directory
     """
 
     @staticmethod
