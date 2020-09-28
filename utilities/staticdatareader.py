@@ -30,6 +30,7 @@ class StaticDataReader:
 
         if not isfile(self.berlin_stops_file): 
             return gpd.GeoDataFrame()
+
         return gpd.read_file(self.berlin_stops_file, crs='epsg:4326')
 
     def _read_berlin_bounds(self) -> gpd.GeoDataFrame: 
