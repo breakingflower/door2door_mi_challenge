@@ -19,14 +19,14 @@ class StaticDataReader:
     def __repr__(self): 
         return f"Reads static data files {self.berlin_bounds_file} and {self.berlin_stops_file}"
 
-    def _read_berlin_stops(self): 
+    def _read_berlin_stops(self) -> gpd.GeoDataFrame: 
         """
         Reads berlin stops from a geojson file, with epsg 4326
         :rtype geopandas.GeoDataFrame
         """
         return gpd.read_file(self.berlin_stops_file, crs='epsg:4326')
 
-    def _read_berlin_bounds(self): 
+    def _read_berlin_bounds(self) -> gpd.GeoDataFrame: 
         """
         Reads berlin bounds from a poly file and set epsg to 4326
         :rtype geopandas.GeoDataFrame
