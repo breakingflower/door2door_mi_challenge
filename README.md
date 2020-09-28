@@ -181,14 +181,14 @@ This is ok, but it would be better to generate it on-the-fly. An option is to sh
 
 All of the cells in the `API-showcase-notebook` are timed using the `%%timeit` and `%%prun` commands and the following conclusions can be drawn:
 
-| Class            | Method                     | Timeit              |   |   |
-|------------------|----------------------------|---------------------|---|---|
-| StaticDataReader | Constructor                | 134ms +1.03ms       |   |   |
-| Simulator        | get_random_points()        | 97.2 ms + 276micros |   |   |
-| Simulator        | simulate()                 | 198 ms + 3.2ms      |   |   |
-| Visualiser       | generate_overview_figure() | 2.17s + 8.0ms       |   |   |
-| Visualiser       | generate_closeup_figure()  | 1.24s + 8.19ms      |   |   |
-| Visualiser       | generate_gmap()            | 4.78ms + 121micros  |   |   |
+| Class            | Method                     | Timeit              |
+|------------------|----------------------------|---------------------|
+| StaticDataReader | Constructor                | 134ms +1.03ms       |
+| Simulator        | get_random_points()        | 97.2 ms + 276micros |
+| Simulator        | simulate()                 | 198 ms + 3.2ms      |
+| Visualiser       | generate_overview_figure() | 2.17s + 8.0ms       |
+| Visualiser       | generate_closeup_figure()  | 1.24s + 8.19ms      |
+| Visualiser       | generate_gmap()            | 4.78ms + 121micros  |
 
 Both matplotlib / contextily generated images are very slow, with a factor 500 slower when compared to the gmplot implementation.
 
