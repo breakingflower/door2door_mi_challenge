@@ -1,3 +1,0 @@
-geopandas==0.5.0
-Shapely==1.6.4.post2
-pandas==1.0.1

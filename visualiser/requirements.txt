@@ -1,3 +1,0 @@
-matplotlib==3.3.2
-gmplot==1.4.1
-contextily==1.0.0
