@@ -7,16 +7,18 @@
 # Date           : "22 September 2020"                                     
 ###################################################################
 
+# To ignore future warnings w.r.t. geopandas 0.5.0 
+# TODO: Remove this when migrating to geopandas > 0.7.0 !
+import warnings
+warnings.simplefilter(action='ignore', category=FutureWarning)
+
 # data manipulation
 import pandas as pd
 import geopandas as gpd
 
-# static data files reader
-from utilities.staticdatareader import StaticDataReader
-# for cleanup of previous simulation results
-from utilities.cleanup import Cleaner
-# bounding box
+# for hints
 from utilities.bounding_box import BoundingBox
+from utilities.staticdatareader import StaticDataReader
 
 # plotting figures
 import matplotlib
@@ -41,21 +43,20 @@ class Visualiser:
 
     ## TODO: Use booking bins
 
-    def __init__(self, bounding_box: tuple, simulation_results: dict):
+    def __init__(self, bounding_box: BoundingBox, simulation_results: dict, static_data: StaticDataReader, static_path: str):
         
-        # cleanup before we continue
-        Cleaner.remove_previous_simulation_results() 
-
         # read the static data files. 
-        # TODO: update to only read once.
-        self.static_data = StaticDataReader()
-        
+        self.static_data = static_data
+
         # set the simulation results
-        self.bounding_box = BoundingBox(bounding_box)
+        self.bounding_box = bounding_box
         self.simulation_results = simulation_results
 
         # a random identifier for the simulation
         self.id = randint(0, 69420)
+        
+        # the directory to store the output visualisations
+        self.static_path = static_path
 
         # set the visualiser coordinate system. Usually web tiles are provided using web mercator
         self.crs_epsg = 3857
@@ -66,7 +67,7 @@ class Visualiser:
     def generate_overview_figure(self):
         """
         Generates an overview image using matplotlib.
-        All of the data is first converted to the correct Coordinate system. 
+        The data is first converted to the correct Coordinate system. 
         The following features can be observed in the output image: 
         - all of the berlin stops
         - a visual sanity check containing the bounds of berlin, 
@@ -77,7 +78,7 @@ class Visualiser:
         The image is saved in the webapp/static directory with the identifier of the Visualiser instance.
         """
 
-        _, ax = plt.subplots(figsize=(10,8)) 
+        _, ax = plt.subplots(figsize=(15,12)) 
         plt.title('Overview plot')
 
         # plotting all of the stops in Berlin in correct crs
@@ -108,15 +109,15 @@ class Visualiser:
         dropoff_data = self.simulation_results['most_popular_dropoff_points'].to_crs(epsg=self.crs_epsg)
         # plot pickup points
         pickup_data.plot(ax=ax, 
-                        marker='.',          
-                        markersize=15, 
-                        color='orange', 
+                        marker='^',          
+                        markersize=150, 
+                        color='green', 
                         label='Pickup Requests')
         # plot dropoff points
         dropoff_data.plot(ax=ax, 
-                        marker='.', 
-                        markersize=15, 
-                        color='green', 
+                        marker='v', 
+                        markersize=150, 
+                        color='red', 
                         label='Dropoff Requests')
         # set labels on axes
         ax.set(xlabel="Latitude", ylabel="Longitude")
@@ -128,19 +129,21 @@ class Visualiser:
         plt.legend(bbox_to_anchor=(1.05, 1))
         plt.tight_layout()
         # save the figure
-        plt.savefig(f'{current_app.static_folder}/{self.id}_overview_plot.png')
+        plt.savefig(f'{self.static_path}/{self.id}_overview_plot.png')
         # close the image
         plt.close()
 
     def generate_closeup_figure(self): 
         """
+        Generates a closeup image using matplotlib.
+        The data is first converted to the correct Coordinate system. 
         Visualises the results provided by the simulation with the following features: 
         - the bounding box itself
         - the simulation results: pickups / dropoffs
         The image is saved in the webapp/static directory with the identifier of the Visualiser instance.
         """
 
-        _, ax = plt.subplots() 
+        _, ax = plt.subplots(figsize=(15,12)) 
 
         plt.title('Close up')
         # Set the coordinate system to EPSG 3857. This is the most popular CRS for web tiles
@@ -148,15 +151,15 @@ class Visualiser:
         dropoff_data = self.simulation_results['most_popular_dropoff_points'].to_crs(epsg=self.crs_epsg)
         # plot pickup points
         pickup_data.plot(ax=ax, 
-                        marker='.',          
-                        markersize=100, 
-                        color='orange', 
+                        marker='^',          
+                        markersize=150, 
+                        color='green', 
                         label='Pickup Requests')
         # plot dropoff points
         dropoff_data.plot(ax=ax, 
-                        marker='.', 
-                        markersize=100, 
-                        color='green', 
+                        marker='v', 
+                        markersize=150, 
+                        color='red', 
                         label='Dropoff Requests')
         # set labels on axes
         ax.set(xlabel="Latitude", ylabel="Longitude")
@@ -167,13 +170,13 @@ class Visualiser:
         plt.legend(bbox_to_anchor=(1.05, 1))
         plt.tight_layout()
         # save figure
-        plt.savefig(f'{current_app.static_folder}/{self.id}_closeup_plot.png')
+        plt.savefig(f'{self.static_path}/{self.id}_closeup_plot.png')
         # close 
         plt.close()
 
     def generate_gmap(self): 
         """
-        Generates an interactive google maps plot as an HTML file.
+        Generates an interactive google maps plot as an HTML file using gmplot.
         No API key was defined, so only for development purposes.
         """
         # Create the map plotter. No API key for this project
@@ -183,7 +186,7 @@ class Visualiser:
         # scatter pickup points
         gmap.scatter(self.simulation_results['most_popular_pickup_points'].geometry.y, 
                         self.simulation_results['most_popular_pickup_points'].geometry.x, 
-                        color='blue', marker=True)
+                        color='green', marker=True)
         # add the identifier to the marker. Unfortunately no function for gmap.scatter to annotate
         for _, row in self.simulation_results['most_popular_pickup_points'].iterrows(): 
             gmap.text(row.geometry.y, row.geometry.x, row.id)
@@ -205,4 +208,4 @@ class Visualiser:
         )
     
         # Draw the map to an HTML file:
-        gmap.draw(f'{current_app.static_folder}/{self.id}_map.html')
+        gmap.draw(f'{self.static_path}/{self.id}_map.html')
