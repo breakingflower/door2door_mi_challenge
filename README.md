@@ -36,7 +36,7 @@ pip install -r requirements.txt
 ## Running the application using the webapp module
 
 The webapp module contains the web interface.
-All of the webpages are generated using the python `flask` module.
+All of the webpages are generated using the python [flask](https://flask.palletsprojects.com/en/1.1.x/) module. I did not use React as I dont have any experience with this framework. The flask library is not necessarily good for production use, but can be used to interface with python applications easily.
 
 Two directories are created in the webapp module:
 
@@ -167,15 +167,21 @@ This is ofcourse not necessary.
 
 - The visualisations are generated to a directory, and this directory is cleaned up before a new request is completed when the webapp is used.
 This is ok, but it would be better to generate it on-the-fly. An option is to show a default Berlin visualisation and data can be highlighted by for example selection using mouse input.
-- A good extension to the visualisation module would be to use the `simulator.get_booking_distance_bins()` method. However, this method is not related to the actual sampled points so it was ignored for this project.
+- Two out of three visualisations use the commonly used `matplotlib` library. I used this library because of its heavy use in python development.
+- The `gmplot` library is used for a last visualisation. There are many libraries such as this one. I just chose this one because of the dynamic map generation, it looks cool.
+- A good extension to the visualisation module would be to use the output of the `simulator.get_booking_distance_bins()` method. However, this method is not related to the actual sampled points so it was ignored for this project.
+- More data would mean better visualisations.
+- Evaluating KPI is heavily dependent on the simulation data and defining a good metric should be done in a team discussion with extensive research, not by a single person. A good metric could be based on deriving a possible path planning, e.g. a solution to the commonly known [travelling salesman problem](https://en.wikipedia.org/wiki/Travelling_salesman_problem) that minimizes the travelled distance. However, perceived customer value - for example time spent in the vehicle - is also very important because the fuel consumption only relates to the monetary aspect of the service.
 - No path is shown between sets of points. This is related to dropoff-pickup relationships.
 - The Google Maps web page displays an error "This page can't load Google Maps correctly." due to no API key being present for this project.
 
 ### Other
 
 - The Simulator requires a GeoPandas version of 0.5.0. In this version a FutureWarning is given for the initialisation of a GeoDataFrame with coordinate systems. This is according to [this stackexchange post](https://gis.stackexchange.com/questions/348997/constant-future-warnings-with-new-pyproj) fixed in version > 0.7.0. However, touching the requirements for the simulator is out of scope. Fixing the warnings will be done after the migration to > 0.7.0 is done.
+- A large overhead is added by the use of geodataframes, which in small datasets such as this one is not necessary.
 - The Visualiser class is quite slow due to queries to the web tile servers. This can be improved using cached tiles.
-- All of the classes are built to be easily extensible / maintainable.
+- All of the classes are built to be easily extensible / maintainable, but ofcourse I am open to modifications to better match the other parts of the application.
+- The Dockerfile is not optimized at all. Furthermore, the docker runs completely isolated and maybe a volume needs to be shared for the simulation results.
 
 ### Timing
 
