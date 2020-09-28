@@ -62,7 +62,6 @@ class Visualiser:
         self.static_path = static_path
 
         # set the contextily cache dir to reduce downloads
-        # print(os.path.join(static_path, "tiles"))
         ctx.set_cache_dir(os.path.join(os.getcwd(), 'data', 'contextily_cache'))
 
         # set the visualiser coordinate system. Usually web tiles are provided using web mercator
