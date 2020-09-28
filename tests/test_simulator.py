@@ -21,13 +21,24 @@ class TestSimulator(unittest.TestCase):
         self.n = 6
 
     def test_get_booking_distance_bins(self): 
-        self.assertIsInstance(self.simulator.get_booking_distance_bins(self.n), dict)
+        """
+        Test output of get_booking_distance_bins. This should return a dict with size
+        len(Simulator().booking_distance_distribution)
+        """
+        booking_distance_bins = self.simulator.get_booking_distance_bins(self.n)
+        self.assertIsInstance(booking_distance_bins, dict)
+        self.assertEqual(len(booking_distance_bins), len(self.simulator.booking_distance_distribution))
+
     
     def test_simulate(self): 
         """
+        This test asserts that the output of the simulation is a dictionary with size 3.
         This uses some distribution so defining a test is limited to output type
         """
-        self.assertIsInstance(self.simulator.simulate(self.n), dict)
+        simulation = self.simulator.simulate(self.n)
+
+        self.assertIsInstance(simulation, dict)
+        self.assertEqual(len(simulation), 3)
 
     def tearDown(self): 
         pass
