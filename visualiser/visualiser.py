@@ -33,6 +33,9 @@ from random import randint
 # google maps plotting
 import gmplot
 
+# to edit the contextily cache directory
+import os
+
 # for static directory extraction from the current_app
 from flask import current_app
 
@@ -57,6 +60,10 @@ class Visualiser:
         
         # the directory to store the output visualisations
         self.static_path = static_path
+
+        # set the contextily cache dir to reduce downloads
+        # print(os.path.join(static_path, "tiles"))
+        ctx.set_cache_dir(os.path.join(os.getcwd(), 'data', 'contextily_cache'))
 
         # set the visualiser coordinate system. Usually web tiles are provided using web mercator
         self.crs_epsg = 3857
