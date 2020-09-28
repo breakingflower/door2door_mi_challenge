@@ -31,7 +31,7 @@ class StaticDataReader:
 
     def _read_berlin_bounds(self): 
         """
-        Reads berlin bounds from a poly file. 
+        Reads berlin bounds from a poly file and set epsg to 4326
         :rtype geopandas.GeoDataFrame
         """
         df = pd.read_csv(self.berlin_bounds_file, delim_whitespace=True, header=None)
@@ -39,8 +39,10 @@ class StaticDataReader:
 
         # create a geodataframe
         gdf = gpd.GeoDataFrame(
-            df, crs  ='epsg:4326',
+            df,
             geometry = gpd.points_from_xy(df.lat, df.lon)
         )
+        # set the coordinate system. This has to be done this way due to geopandas==0.5.0
+        gdf.crs = {'init': 'epsg:4326'}
 
         return gdf
