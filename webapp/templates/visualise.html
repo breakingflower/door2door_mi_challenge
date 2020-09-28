@@ -3,17 +3,16 @@
 {% block content %}
 <h1>Visualisation of the requested query</h1>
 
-
-
+<!-- Images showing the overview_image and the closeup image.  -->
 <img class="img-fluid" src="{{ overview_image_url }}" alt="Overview result">
 <img class="img-fluid" src="{{ closeup_image_url }}" alt="Closeup result">
 
+<!-- Reponsive google maps page -->
 <div class="embed-responsive embed-responsive-16by9">
     <iframe class="embed-responsive-item" src={{ gmap_url }} allowfullscreen></iframe>
 </div>
 
-
-
+<!-- A button to go back to the trigger page -->
 <form action="/">
     <input class="btn btn-outline-info" type="submit" value="Run a new simulation" />
 </form>
