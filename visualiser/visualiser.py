@@ -149,7 +149,7 @@ class Visualiser:
         The image is saved in the webapp/static directory with the identifier of the Visualiser instance.
         """
 
-        _, ax = plt.subplots(figsize=(15,12)) 
+        _, ax = plt.subplots(figsize=(15,7)) 
 
         plt.title('Close up')
         # Set the coordinate system to EPSG 3857. This is the most popular CRS for web tiles
