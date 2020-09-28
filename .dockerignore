@@ -1,0 +1,3 @@
+# ignore some directories while COPY
+env
+__pycache__/*
