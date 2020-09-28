@@ -30,6 +30,7 @@ class BoundingBox:
         """
         Returns a tuple with the center of the bounding box, calculated by averaging lat/lon coordinates.
         eg (y0 + y1) / 2 , (x0 + x1) / 2
+        :rtype tuple
         """
         return (self.bounding_box[1] + self.bounding_box[3]) / 2, (self.bounding_box[0] + self.bounding_box[2]) / 2
         
@@ -37,6 +38,7 @@ class BoundingBox:
     def lats(self) -> list: 
         """
         Returns list of four latitude coordinates
+        :rtype list
         """
         return [self.bounding_box[1], self.bounding_box[3], self.bounding_box[3], self.bounding_box[1]]
     
@@ -44,5 +46,6 @@ class BoundingBox:
     def lons(self) -> list:
         """
         Returns list of four longitude coordinates
+        :rtype list
         """
         return [self.bounding_box[0], self.bounding_box[0], self.bounding_box[2], self.bounding_box[2]]
