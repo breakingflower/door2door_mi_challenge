@@ -4,8 +4,6 @@ from flask_wtf import CSRFProtect
 from webapp.routes import routes
 from webapp.config import Config
 
-from utilities.staticdatareader import StaticDataReader
-
 def create_app():
     """
     Creates a basic Flask application. 
