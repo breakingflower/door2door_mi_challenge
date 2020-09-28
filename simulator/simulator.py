@@ -1,12 +1,12 @@
 import geopandas as gpd
 from shapely.geometry import box
 
-
 class Simulator:
     booking_distance_distribution = [0.2, 0.1, 0.3, 0.4]
     max_popular_points = 10
     
     # it would be good to not hard code this
+    # path_to_stops = current_app.config['BERLIN_STOPS_FILE']
     path_to_stops = 'data/berlin_stops.geojson'
 
     def __init__(self, bounding_box):
@@ -21,7 +21,7 @@ class Simulator:
             number_of_sample_points)
         most_popular_pickup_points = self.get_random_points(
             number_of_sample_points)
-
+            
         return {
             'booking_distance_bins': booking_distance_bins,
             'most_popular_dropoff_points': most_popular_dropoff_points,
@@ -35,6 +35,6 @@ class Simulator:
 
     def get_random_points(self, n):
         bounding_box_shape = box(*self.bounding_box)
-        geodataframe = gpd.read_file(self.path_to_stops)
+        geodataframe = gpd.read_file(self.path_to_stops, crs='epsg:4326')
         within_bounds = geodataframe[geodataframe.within(bounding_box_shape)]
         return within_bounds.sample(n) # .to_json()
