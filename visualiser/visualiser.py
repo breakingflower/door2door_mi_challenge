@@ -85,14 +85,17 @@ class Visualiser:
         plt.title('Overview plot')
 
         # plotting all of the stops in Berlin in correct crs
-        self.static_data.berlin_stops.to_crs(epsg=self.crs_epsg).plot(ax=ax, marker='.', markersize=15, label='Stops') 
-
-        # convert the bounds of berlin to the correct crs
-        berlin_bounds_points = self.static_data.berlin_bounds.to_crs(epsg=self.crs_epsg)
-        # convert the points to a polygon
-        berlin_bounds_poly = Polygon([[p.x, p.y] for p in berlin_bounds_points.geometry])
-        # plot the polygon's exterior --> this is the bounds of berlin.
-        ax.plot(*berlin_bounds_poly.exterior.xy, color='red')
+        if not self.static_data.berlin_stops.empty:
+            self.static_data.berlin_stops.to_crs(epsg=self.crs_epsg).plot(ax=ax, marker='.', markersize=15, label='Stops') 
+        
+        # plotting the polygon around berlin
+        if not self.static_data.berlin_bounds.empty:
+            # convert the bounds of berlin to the correct crs
+            berlin_bounds_points = self.static_data.berlin_bounds.to_crs(epsg=self.crs_epsg)
+            # convert the points to a polygon
+            berlin_bounds_poly = Polygon([[p.x, p.y] for p in berlin_bounds_points.geometry])
+            # plot the polygon's exterior --> this is the bounds of berlin.
+            ax.plot(*berlin_bounds_poly.exterior.xy, color='red')
 
         # plot the bounding box as a matplotlib Rectangle
         x1, y1, x2, y2 = self.bounding_box.to_crs(epsg=self.crs_epsg)
