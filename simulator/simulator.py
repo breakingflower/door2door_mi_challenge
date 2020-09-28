@@ -34,4 +34,9 @@ class Simulator:
         bounding_box_shape = box(*self.bounding_box)
         geodataframe = gpd.read_file(self.path_to_stops, crs='epsg:4326')
         within_bounds = geodataframe[geodataframe.within(bounding_box_shape)]
+
+        # if less than n points are available, return the ones that are available.
+        if len(within_bounds) < n: 
+            return within_bounds
+
         return within_bounds.sample(n) # .to_json()

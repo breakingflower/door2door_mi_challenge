@@ -17,6 +17,7 @@ The `data` directory contains two static data files. Addionally, this folder con
 - `simulator/requirements.txt` are moved to `requirements.txt` and updated to match `pandas==1.0.1` due to import errors on version 1.1.2
 - Return type of simulator is not jsonified, e.g. `get_random_points` returns a geodataframe.
 - Sets a default coordinate system in the generated geodataframe: EPSG:4326 (WGS84). This is necessary for getting map tiles from contextily, which operates in the current version in EPSG:3857 - Web mercator.
+- If no points are found or points < n in the `get_random_points()` method, return the maximum amount of points.
 
 ## Python environment
 
@@ -135,6 +136,7 @@ If a user is not using the webserver but instead the API, some checks are perfor
 
 - In `StaticDataReader`: does the berlin_stops / berlin_bounds file exist? If it does not, return an empty geodataframe.
 - in `Visualiser.generate_overview_figure()`: if the geodataframe is empty, ignore it.
+- If the amount of data points from the Simulator is less than the `n` value, print "No Data found for XXX" on the close up image. The overview image still shows the total data + bounds.
 
 Several tests have been defined in the `tests` module. More specifically for the `BoundingBox, Simulator, StaticDataReader and Visualiser` classes. Some of the test modules suppress Future and Deprication Warnings. The tests can be run as follows:
 

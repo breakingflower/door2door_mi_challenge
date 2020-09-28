@@ -113,18 +113,21 @@ class Visualiser:
         # Set the coordinate system of the simulation to EPSG 3857. This is the most popular one for web tiles
         pickup_data = self.simulation_results['most_popular_pickup_points'].to_crs(epsg=self.crs_epsg)
         dropoff_data = self.simulation_results['most_popular_dropoff_points'].to_crs(epsg=self.crs_epsg)
+
         # plot pickup points
-        pickup_data.plot(ax=ax, 
-                        marker='^',          
-                        markersize=150, 
-                        color='green', 
-                        label='Pickup Requests')
+        if not pickup_data.empty:
+            pickup_data.plot(ax=ax, 
+                            marker='^',          
+                            markersize=150, 
+                            color='green', 
+                            label='Pickup Requests')
         # plot dropoff points
-        dropoff_data.plot(ax=ax, 
-                        marker='v', 
-                        markersize=150, 
-                        color='red', 
-                        label='Dropoff Requests')
+        if not dropoff_data.empty:
+            dropoff_data.plot(ax=ax, 
+                            marker='v', 
+                            markersize=150, 
+                            color='red', 
+                            label='Dropoff Requests')
         # set labels on axes
         ax.set(xlabel="Latitude", ylabel="Longitude")
         # add a basemap using contextily
@@ -156,17 +159,24 @@ class Visualiser:
         pickup_data = self.simulation_results['most_popular_pickup_points'].to_crs(epsg=self.crs_epsg)
         dropoff_data = self.simulation_results['most_popular_dropoff_points'].to_crs(epsg=self.crs_epsg)
         # plot pickup points
-        pickup_data.plot(ax=ax, 
-                        marker='^',          
-                        markersize=150, 
-                        color='green', 
-                        label='Pickup Requests')
+        if not pickup_data.empty: 
+            pickup_data.plot(ax=ax, 
+                            marker='^',          
+                            markersize=150, 
+                            color='green', 
+                            label='Pickup Requests')
+        else: 
+            ax.text(0.5, 0.4, 'No Data found for Pickup!', horizontalalignment='center')
         # plot dropoff points
-        dropoff_data.plot(ax=ax, 
-                        marker='v', 
-                        markersize=150, 
-                        color='red', 
-                        label='Dropoff Requests')
+        if not dropoff_data.empty:
+            dropoff_data.plot(ax=ax, 
+                            marker='v', 
+                            markersize=150, 
+                            color='red', 
+                            label='Dropoff Requests')
+        else: 
+            ax.text(0.5, 0.5, 'No Data found for Dropoff!', horizontalalignment='center')
+        
         # set labels on axes
         ax.set(xlabel="Latitude", ylabel="Longitude")
         # add a basemap using contextily & remove axes
